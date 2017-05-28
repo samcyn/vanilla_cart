@@ -25,14 +25,14 @@
             <div class="container gridContainer">
                 <div class="col-md-9">
                     <div class="gridContainer" id="products">
-                        <div class="card" data-name="phone" data-price="1200">
+                        <div class="card" data-name="phone" data-price="1200" data-img="phone.png">
                             
                         </div>
-                        <div class="card">
+                        <div class="card" data-name="fish" data-price="1200" data-img="phone.png">
                             
                         </div>
-                        <div class="card"></div>
-                        <div class="card"></div>
+                        <div class="card" data-name="laptop" data-price="1200" data-img="phone.png"></div>
+                        <div class="card" data-name="hen" data-price="1200" data-img="phone.png"></div>
                         <div class="card"></div>
                         <div class="card"></div>
                         <div class="card"></div>
@@ -40,12 +40,39 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card"></div>
+                    <div class="card">
+                        <ul id="cartList"></ul>
+                        <p id="price"></p>
+                        <p id="serviceCharge"></p>
+                        <p id="deliveryFee"></p>
+                        <p id="grandTotal"></p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <script src="js/main.js"></script>
-        
+        <script>
+            document.onreadystatechange = function () {
+                if (document.readyState === "complete") {
+                   app.cartCtrl({
+                       products : 'card',//class of products to be add or add butttons
+                       removeAllElement: 'remove',//class
+                       increase: 'plus',//class
+                       decrease: 'minus',//class
+                       priceElement: 'price',//id
+                       serviceChargeElement: 'serviceCharge', // id of service charge elememt
+                       serviceChargeValue: 10, //percentage value
+                       deliveryFeeElement: 'deliveryFee',//id of delivery fee element
+                       deliveryFeeValue: 100, //integer
+                       cartContentElement: 'cartList',//id of cart content listings..
+                       cartNodeOutput: "li", //node which we be added to cartContentElement
+                       grandTotalElement: 'grandTotal'
+                       
+                   });
+                }
+            }
+            
+        </script>
 	</body>
 </html>

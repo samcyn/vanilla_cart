@@ -25,27 +25,37 @@
             <div class="container gridContainer">
                 <div class="col-md-9">
                     <div class="gridContainer" id="products">
-                        <div class="card" data-name="phone" data-price="1200">
+                        <div class="card" data-name="phone" data-price="1200" data-img="phone.png" data-unit="per Kg">
                             
                         </div>
-                        <div class="card">
+                        <div class="card" data-name="bag" data-price="1200" data-img="bag.png" data-unit="per Kg">
                             
                         </div>
-                        <div class="card"></div>
-                        <div class="card"></div>
-                        <div class="card"></div>
-                        <div class="card"></div>
-                        <div class="card"></div>
-                        <div class="card"></div>
+                        <div class="card" data-name="shoe" data-price="1500" data-img="shoe.png" data-unit="per Kg"></div>
+                        <div class="card" data-name="sandal" data-price="1500" data-img="sandal.png" data-unit="per Kg"></div>
+                        <div class="card" data-name="chair" data-price="1800" data-img="chair.png" data-unit="per Kg"></div>
+                        <div class="card" data-name="spoon" data-price="1800" data-img="spoon.png" data-unit="per Kg"></div>
+                        <div class="card" data-name="fork" data-price="2100" data-img="fork.png" data-unit="per Kg"></div>
+                        <div class="card" data-name="knife" data-price="2100" data-img="knife.png" data-unit="per Kg"></div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card"></div>
+                    <div class="card">
+                        <ul id="cartItems">    
+                            
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
 
         <script src="js/main.js"></script>
-        
+        <script>
+            document.onreadystatechange = function(){
+                if (document.readyState === "complete"){
+                    app.cartCtrl();
+                }
+            }
+        </script>
 	</body>
 </html>

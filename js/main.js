@@ -100,7 +100,7 @@ var app = {
                 var item = cart[i];
                 var itemCopy = {};
                 for(var p in item){
-                itemCopy[p] = item[p];
+                    itemCopy[p] = item[p];
                 }
                 cartCopy.push(itemCopy);
             }
@@ -156,11 +156,13 @@ var app = {
                           </${arg.cartNodeOutput}>`;
             }
 
-            document.getElementById(arg.cartContentElement).innerHTML = output;
-            document.getElementById(arg.priceElement).innerHTML = totalCart();
-            document.getElementById(arg.serviceChargeElement).innerHTML = serviceChargeCtrl(Number(arg.serviceChargeValue));
-            document.getElementById(arg.deliveryFeeElement).innerHTML = deliveryCtrl(Number(arg.deliveryFeeValue));
-            document.getElementById(arg.grandTotalElement).innerHTML = totalCart() + serviceChargeCtrl(Number(arg.serviceChargeValue)) + deliveryCtrl(Number(arg.deliveryFeeValue));
+           
+            $selctor(arg.cartContentElement).innerHTML = output;
+            $selctor(arg.priceElement).innerHTML = totalCart();
+            $selctor(arg.itemCountElement).innerHTML =  countCart();
+            $selctor(arg.serviceChargeElement).innerHTML = serviceChargeCtrl(Number(arg.serviceChargeValue));
+            $selctor(arg.deliveryFeeElement).innerHTML = deliveryCtrl(Number(arg.deliveryFeeValue));
+            $selctor(arg.grandTotalElement).innerHTML = totalCart() + serviceChargeCtrl(Number(arg.serviceChargeValue)) + deliveryCtrl(Number(arg.deliveryFeeValue));
             
             
         }
@@ -169,16 +171,23 @@ var app = {
         
         //add an item to cart
         document.addEventListener('click', function(event){
-            
+           // var obj = {}
             if(event.target.className !== arg.products){
                 return;
             }
-            var name = event.target.getAttribute('data-name');
-            var price = event.target.getAttribute('data-price');
-            var unit = event.target.getAttribute('data-unit');
-            var img = event.target.getAttribute('data-img');
+            //get the attribute form the current element or its parent
+            var name = event.target.getAttribute(arg.dataAttr[0]) || event.target.parentElement.getAttribute(arg.dataAttr[0]);
+            var price = event.target.getAttribute(arg.dataAttr[1]) || event.target.parentElement.getAttribute(arg.dataAttr[1]);
+            var unit = event.target.getAttribute(arg.dataAttr[2]) || event.target.parentElement.getAttribute(arg.dataAttr[2]);
+            var img = event.target.getAttribute(arg.dataAttr[3]) || event.target.parentElement.getAttribute(arg.dataAttr[3]);
+
+            
+            
+            //console.log(event.target.attributes[1].nodeValue);
+            //console.log(event.target.getAttribute('data-name'));
             addItemToCart(name, price, 1, unit, img);
             displayCart();
+            document.querySelector('html').classList.add('open');
             console.log(cart);
         });
 
@@ -237,12 +246,20 @@ var app = {
         console.log(arg);
 
 
+        //select element with ID or class
+        function $selctor(elem){
+            return document.querySelector('.' + elem) || document.querySelector('#' + elem);
+        }
+
+
+
+
     
 
 
 
         
-        saveCart();
+        //saveCart();
         loadCart();
         displayCart();
     }

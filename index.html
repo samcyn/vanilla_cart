@@ -13,63 +13,132 @@
                         <li>LOGO</li>
                     </ul>
                     <ul>
-                        <li>ITEMS</li>
-                        <li>HELP</li>
-                        <li>HELP</li>
-                        <li>HELP</li>
+                        <li><a href="#" class="toggler">&#x02261;</a></li>
                     </ul>
                 </div>
             </nav>
         </header>
         <section class="main">
-            <div class="container gridContainer">
-                <div class="col-md-9">
-                    <div class="gridContainer" id="products">
-                        <div class="card" data-name="phone" data-price="1200" data-img="phone.png">
-                            
+            <div class="container">
+                <div class="gridContainer" id="products">
+                    <div class="card" data-name="phone" data-price="1200" data-img="http://www.pngall.com/wp-content/uploads/2016/03/Shoes-PNG-Image.png">
+                        <span class="card_head">
+                            <span class="card_title"> Facebook</span>
+                        </span>
+                        <div class="card_body">
+                            <img src="http://www.pngall.com/wp-content/uploads/2016/03/Shoes-PNG-Image.png">
                         </div>
-                        <div class="card" data-name="fish" data-price="1200" data-img="phone.png">
-                            
-                        </div>
-                        <div class="card" data-name="laptop" data-price="1200" data-img="phone.png"></div>
-                        <div class="card" data-name="hen" data-price="1200" data-img="phone.png"></div>
-                        <div class="card"></div>
-                        <div class="card"></div>
-                        <div class="card"></div>
-                        <div class="card"></div>
+                        <button class="add">Add to cart</button>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card">
-                        <ul id="cartList"></ul>
-                        <p id="price"></p>
-                        <p id="serviceCharge"></p>
-                        <p id="deliveryFee"></p>
-                        <p id="grandTotal"></p>
+                    <div class="card" data-name="fish" data-price="1200" data-img="http://pngimg.com/uploads/running_shoes/running_shoes_PNG5805.png">
+                        <span class="card_head">
+                            <span class="card_title"> Facebook</span>
+                        </span>
+                        <div class="card_body">
+                            <img src="http://pngimg.com/uploads/running_shoes/running_shoes_PNG5805.png">
+                        </div>
+                        <button class="add">Add to cart</button>
+                    </div>
+                    <div class="card" data-name="laptop" data-price="1200" data-img="http://pngimg.com/uploads/men_shoes/men_shoes_PNG7487.png">
+                        <span class="card_head">
+                            <span class="card_title"> Facebook</span>
+                        </span>
+                        <div class="card_body">
+                            <img src="http://pngimg.com/uploads/men_shoes/men_shoes_PNG7487.png">
+                        </div>
+                        <button class="add">Add to cart</button>
+                    </div>
+                    <div class="card" data-name="hen" data-price="1200" data-img="phone.png">
+                        <span class="card_head">
+                            <span class="card_title"> Facebook</span>
+                        </span>
+                        <div class="card_body">
+                            <img src="img/phone.png">
+                        </div>
+                        <button class="add">Add to cart</button>
+                    </div>
+
+                    <div class="card" data-name="comb" data-price="1200" data-img="phone.png">
+                        <span class="card_head">
+                            <span class="card_title"> Facebook</span>
+                        </span>
+                        <div class="card_body">
+                            <img src="img/phone.png">
+                        </div>
+                        <button class="add">Add to cart</button>
+                    </div>
+                    <div class="card"  data-name="Deluxe" data-price="1200" data-img="phone.png">
+                        <span class="card_head">
+                            <span class="card_title"> Facebook</span>
+                        </span>
+                        <div class="card_body">
+                            <img src="img/phone.png">
+                        </div>
+                        <button class="add">Add to cart</button>
+                    </div>
+                    <div class="card"  data-name="Akara" data-price="1200" data-img="phone.png">
+                        <span class="card_head">
+                            <span class="card_title"> Facebook</span>
+                        </span>
+                        <div class="card_body">
+                            <img src="img/phone.png">
+                        </div>
+                        <button class="add">Add to cart</button>
+                    </div>
+                    <div class="card"  data-name="Rice" data-price="1200" data-img="phone.png">
+                        <span class="card_head">
+                            <span class="card_title"> Facebook</span>
+                        </span>
+                        <div class="card_body">
+                            <img src="img/phone.png">
+                        </div>
+                        <button class="add">Add to cart</button>
                     </div>
                 </div>
             </div>
+            
         </section>
+        <aside>
+            <div class="col-md-3">
+                <div class="card">
+                    <span class="count"></span>
+                    <ul class="cartList"></ul>
+                    <p class="price"></p>
+                    <p class="serviceCharge"></p>
+                    <p id="deliveryFee"></p>
+                    <p id="grandTotal"></p>
+                </div>
+            </div>
+        </aside>
+
+        <button id="clearCart" title="Clear Cart">CL</button>
 
         <script src="js/main.js"></script>
         <script>
             document.onreadystatechange = function () {
                 if (document.readyState === "complete") {
                    app.cartCtrl({
-                       products : 'card',//class of products to be add or add butttons
+                       products : 'add',//class of products to be add or add butttons
                        removeAllElement: 'remove',//class
                        increase: 'plus',//class
                        decrease: 'minus',//class
                        priceElement: 'price',//id
+                       itemCountElement: 'count',
                        serviceChargeElement: 'serviceCharge', // id of service charge elememt
                        serviceChargeValue: 10, //percentage value
                        deliveryFeeElement: 'deliveryFee',//id of delivery fee element
                        deliveryFeeValue: 100, //integer
                        cartContentElement: 'cartList',//id of cart content listings..
                        cartNodeOutput: "li", //node which we be added to cartContentElement
-                       grandTotalElement: 'grandTotal'
+                       grandTotalElement: 'grandTotal',
+                       dataAttr: ['data-name', 'data-price', 'data-unit', 'data-img']//data attribute to loop through
                        
                    });
+
+                   document.getElementsByClassName('toggler')[0].addEventListener('click', function(){
+                       document.querySelector('html').classList.toggle('open');
+                   });
+
                 }
             }
             

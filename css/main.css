@@ -1,10 +1,13 @@
 *{
     box-sizing: border-box;
 }
+
+button,button:hover,button:active, button:visited{
+    outline: 0;
+}
 html,body{
     padding: 0px;
     margin: 0px;
-    background: #EEE;
 }
 
 nav{
@@ -13,7 +16,7 @@ nav{
 }
 
 .container{
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
 }
 
@@ -26,24 +29,101 @@ nav .gridContainer{
     grid-template-columns: repeat(1, 1fr 9fr);
     grid-template-rows: 60px;
 }
+nav ul{
+    padding-left: 0px;
+    padding-top: 5px;
+}
+
+nav ul li a{
+    text-decoration: none;
+    color: #222;
+    outline: 0;
+}
+
+nav ul li a.toggler {
+    line-height: 20px;
+    font-size: 50px;
+}
 
 section.main{
     padding-top: 100px;
     padding-bottom: 100px;
+    position: relative;
+}
+aside{
+    position: fixed;
+    width: 20%;
+    height: calc(100% - 60px);
+    right: 0px;
+    top: 60px;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
+    transform: translate3d(100%, 0, 0);
 }
 
-section .container.gridContainer{
-   grid-template-columns: repeat(1, 8fr 2fr);
+section .container{
+    width: 60%;
 }
+
+.open aside{
+    transform: translate3d(0,0,0);
+}
+/*section .container.gridContainer{
+   grid-template-columns: repeat(1, 8fr 2fr);
+}*/
 
 .card{
-    min-height: 200px;
     background: #FFF;
+    position: relative;
+    min-height: 128px;
+    background-color: #F2F2F2;
+    border: 1px solid #E4E4E4;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.3s;
 }
-.card a{
+
+#products .card{
+    height: 128px;
+}
+
+.card:hover{
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.4);
+    transform: scale(3.1);
+    z-index: 10000;
+    top: 20px;
+    right: 0px;
+    left: 0px;
+}
+.card img{
     display: block;
     height: 100%;
     width: 100%;
+}
+
+.card button{
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
+.card .card_head{
+    display: flex;
+    align-items: center;
+    height: 30px;
+    padding: 0 6px;
+}
+
+.card .card_title{
+    color: #000;
+    font-size: 12px;
+    text-decoration: none;
+    line-height: 30px;
+}
+
+.card .card_body{
+    height: calc(100% - 30px);
 }
 
 #products.gridContainer{
@@ -62,3 +142,19 @@ ul:nth-child(2){
 ul:nth-child(2) li{
     display: inline-block;
 }
+
+#clearCart{
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    height: 80px;
+    width: 80px;
+    border-radius:100%;
+    background: #FF6347;
+    background-color: #FF6347;
+    border-color: #FF6347;
+    cursor: pointer;
+    transition: 1s all ease;
+    transform: translateY(0%);
+}
+

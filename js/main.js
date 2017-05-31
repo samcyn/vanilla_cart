@@ -1,197 +1,259 @@
-const app = {
-    cartCtrl() {
-        // empty cart...
-        let cart = [];
-
-        // Object constructor for creating items...
-        function Item(name, price, count, unit, img) {
+var app = {
+    cartCtrl: function(arg){
+        arg = arg || {
+                       products : undefined,//class of products to be add or add butttons
+                       removeAllElement: undefined,//class
+                       increase: undefined,//class
+                       decrease: undefined,
+                       priceElement: undefined,//id
+                       serviceChargeElement: undefined, // id of service charge elememt
+                       serviceChargeValue: undefined, //percentage value
+                       deliveryFeeElement: undefined,//id of delivery fee element
+                       deliveryFeeValue: undefined, //integer
+                       cartContentElement: undefined,//id of cart content listings..
+                       cartNodeOutput: "li", //node which we be added to cartContentElement
+                       grandTotalElement: undefined
+                       
+                   }
+        
+        var cart = [];
+        
+        //An object constructor that create items...
+        function Item (name, price, count, unit, img){
             this.name = name;
             this.price = price;
             this.count = count;
             this.unit = unit;
             this.img = img;
         }
-
-        // Add items to cart...
-        function addItemToCart(name, price, count, unit, img) {
+    
+        //addItemToCart(name, price, count)
+        function addItemToCart(name, price, count, unit, img){
             for(var i in cart){
-                if (cart[i].name === name){
-                    cart[i].count += count;
-                    saveOurCart();
-                    return;
+                if(cart[i].name === name){
+                cart[i].count += count;
+                //console.log(cart);
+                saveCart();
+                return;
                 }
             }
-            let item = new Item(name, price, count, unit, img);
-            cart.unshift(item);
-            saveOurCart();
-            // console.log(cart);
             
+            var item = new Item(name, price, count, unit, img);
+            cart.unshift(item);
+            saveCart();
         }
 
-        // remove an item from cart
-        function removeAnItemFromCart(name) {
+        //removeItemFromCart(name) from the cart, just one item
+        function removeItemFromCart(name){
             for(var i in cart){
-                if (cart[i].name === name){
-                    cart[i].count--
-                    if(cart[i].count === 0){
-                        cart.splice(i, 1);
-                    }
-                    break;
+                if(cart[i].name === name){
+                cart[i].count--;
+                if(cart[i].count === 0){
+                    cart.splice(i, 1);
+                }
+                break;
                 }
             }
+            saveCart();
         }
 
-        // remove all items from cart
-        function removeItemFromCartAll(name) {
-            for (var i in cart) {
-                if (cart[i].name === name){
+        //removeItemFromCartAll, all items....
+        function removeItemFromCartAll(name){
+            for(var i in cart){
+                if(cart[i].name === name){
                     cart.splice(i, 1);
                     break;
                 }
             }
-            saveOurCart();
+
+            saveCart();
         }
 
-        // clear cart...
-        function clearAllItemsFromCart() {
+        //clear cart
+        function clearCart(){
             cart = [];
-            saveOurCart();
-            // console.log(cart);
+            saveCart();
         }
 
-        // Get total no of items in cart...
-        function totalCountOfItems() {
-            let total = 0;
-            for (var i in cart) {
-                total += cart[i].count;
+        //return total count in the cart
+        function countCart(){
+            var totalCount = 0;
+            for(var i in cart){
+                totalCount += cart[i].count;
             }
-            return total;
+            return totalCount;
         }
 
-        // Get total amount(price) of items in cart...        
-        function totalAmount() {
-            let amount = 0;
-            for (var i in cart) {
-                amount += (cart[i].price)*cart[i].count;
+        //return total cost
+        function totalCart(){
+            var totalCost = 0;
+            for(var i in cart){
+                totalCost += cart[i].price * cart[i].count;
             }
-            return totalAmount;
+            return totalCost;
         }
 
-        // Get delivery fee of all items purchased...        
-        function deliveryFee(fee) {
-            return fee;
-        }
-
-        // Get total service charge for purchase of items...        
-        function serviceCharge(percent) {
-            let service = 0;
-            service = (percent/100) * totalAmount();
-            return service;
-        }
-
-        // Get gross total amount(price) of items in cart...        
-        function grandTotal(percent, fee) {
-            let grossTotal = 0;
-            grossTotal += (totalAmount() + serviceCharge(percent) + deliveryFee(fee));
-            return grossTotal;
-        }
-
-        // Create a copy of all cart items to be used in displaying cart changes...
-        function duplicateCart() {
-            let cartCopy = [];
-
-            for (var i in cart) {
-                let item = cart[i];
-                let itemCopy = {};
-                for (var p in item) {
+        //listCart return array[] of items
+        function listCart(){
+            var cartCopy = [];
+            
+            for(var i in cart){
+                var item = cart[i];
+                var itemCopy = {};
+                for(var p in item){
                     itemCopy[p] = item[p];
                 }
-                cartCopy.push(itemCopy)
+                cartCopy.push(itemCopy);
             }
+           // console.log(cartCopy);
             return cartCopy;
         }
 
-        // Display cart changes...
-        function displayCartChanges() {
-            let cartArray = duplicateCart();
-            let output = '';
+         //calculates service charges here....
+        function serviceChargeCtrl(percent){
+            serviceCharge = 0;
+            if(isNaN(percent)){
+                return serviceCharge;
+            }
+            serviceCharge = (percent/100) * totalCart();
+            return serviceCharge;
+        }
 
-            for (var i in cartArray) {
-                output += `<li>${cartArray[i].name} -- ${cartArray[i].price} <span class="remove" data-action = ${cartArray[i].name} >X</span> </li>`;
+        //calculates service charges here....
+        function deliveryCtrl(dvFee){
+            //console.log(isNaN(dvFee));
+            if(isNaN(dvFee)){
+                return 0;
+            }
+            if(totalCart() == 0){
+                return 0;
+            }
+            return dvFee;
+        }
+
+        //save cart.............
+        function saveCart(){
+            localStorage.setItem("shoppingCart", JSON.stringify(cart));
+        }
+
+        //load the cart
+        function loadCart(){
+            cart = JSON.parse(localStorage.getItem("shoppingCart"));
+        }
+
+       
+        //display items in cart
+        function displayCart(){
+            var cartArray = listCart();
+        
+    
+            var output = "";
+            for(var i in cartArray){
+                output += `<${arg.cartNodeOutput} data-name = ${cartArray[i].name}>
+                                ${cartArray[i].name} -- 
+                                <span class="${arg.removeAllElement}">X</span>
+                                <span class="${arg.increase}"> + </span>
+                                <span class="${arg.decrease}"> - </span>
+                          </${arg.cartNodeOutput}>`;
             }
 
-            let cartItems = document.getElementById('cartItems');
-            let counter = document.getElementById('count')
-
-            cartItems.innerHTML = output;
-            counter.innerHTML = totalCountOfItems();
+           
+            $selctor(arg.cartContentElement).innerHTML = output;
+            $selctor(arg.priceElement).innerHTML = totalCart();
+            $selctor(arg.itemCountElement).innerHTML =  countCart();
+            $selctor(arg.serviceChargeElement).innerHTML = serviceChargeCtrl(Number(arg.serviceChargeValue));
+            $selctor(arg.deliveryFeeElement).innerHTML = deliveryCtrl(Number(arg.deliveryFeeValue));
+            $selctor(arg.grandTotalElement).innerHTML = totalCart() + serviceChargeCtrl(Number(arg.serviceChargeValue)) + deliveryCtrl(Number(arg.deliveryFeeValue));
+            
+            
         }
 
-        // Save cart if no db present...
-        function saveOurCart() {
-            localStorage.setItem("switchCart", JSON.stringify(cart));
-        }
-
-        // Retrieve saved cart...
-        function loadOurCart() {
-            cart = JSON.parse(localStorage.getItem("switchCart"));
-        }
-
-        let products = Array.from(document.getElementById('products').querySelectorAll('.card'));
-        let removes = Array.from(document.querySelectorAll('.removes'));
-        let clearCart = document.getElementById('clear_cart');
-        //console.log(products);
+       
         
-        function productHandler(){
-            let name = this.getAttribute('data-name');
-            let price = this.getAttribute('data-price');
-            let unit = this.getAttribute('data-unit');
-            let img = this.getAttribute('data-img');
+        //add an item to cart
+        document.addEventListener('click', function(event){
+           // var obj = {}
+            if(event.target.className !== arg.products){
+                return;
+            }
+            //get the attribute form the current element or its parent
+            var name = event.target.getAttribute(arg.dataAttr[0]) || event.target.parentElement.getAttribute(arg.dataAttr[0]);
+            var price = event.target.getAttribute(arg.dataAttr[1]) || event.target.parentElement.getAttribute(arg.dataAttr[1]);
+            var unit = event.target.getAttribute(arg.dataAttr[2]) || event.target.parentElement.getAttribute(arg.dataAttr[2]);
+            var img = event.target.getAttribute(arg.dataAttr[3]) || event.target.parentElement.getAttribute(arg.dataAttr[3]);
+
+            
+            
+            //console.log(event.target.attributes[1].nodeValue);
+            //console.log(event.target.getAttribute('data-name'));
             addItemToCart(name, price, 1, unit, img);
-            displayCartChanges();
-        }
-
-        function removeHandler() {
-            // alert('hi!');
-            let name = this.getAttribute('data-action');
-            console.log(this.parentElement);
-    	    removeItemFromCart(name);
-        }
-        
-        products.forEach(function(product){
-            product.addEventListener('click', productHandler);
+            displayCart();
+            document.querySelector('html').classList.add('open');
+            console.log(cart);
         });
 
-        removes.forEach(function(remove) {
-            remove.addEventListener('click', remove, removeHandler)
-        });
-
-        document.addEventListener('click', function(e){
-            if(e.target.className !== 'remove'){
+       // remove an item from cart
+       document.addEventListener('click', function(e){
+            if(e.target.className !== arg.removeAllElement){
                 return;
             }
             e.target.parentElement.remove();
-            let name = e.target.getAttribute('data-action');
+            //console.log( e.target.parentElement.getAttribute('data-name'));
+            var name = e.target.parentElement.getAttribute('data-name');
             removeItemFromCartAll(name);
-            displayCartChanges();
+            displayCart();
             // console.log(e.target.className);
 
         });
 
-        clearCart.addEventListener('click', function(){
-            clearAllItemsFromCart();
-            displayCartChanges();
-        })
+        // increase the count of an item
+         document.addEventListener('click', function(e){
+            if(e.target.className !== arg.increase){
+                return;
+            }
+            //e.target.parentElement.remove();
+            //console.log( e.target.parentElement.getAttribute('data-name'));
+            var name = e.target.parentElement.getAttribute('data-name');
+            addItemToCart(name, 0, 1, 0, 0);
+            displayCart();
+            //console.log(cart);
+            // console.log(e.target.className);
 
-        // saveOurCart();
-        loadOurCart();
-        displayCartChanges();
+        });
 
-        // addItemToCart("bag", 100, 2, "kg", "bag.png");
-        // addItemToCart("bag", 100, 2, "kg", "bag.png");
-        // addItemToCart("bag", 100, 2, "kg", "bag.png");
-        // addItemToCart("chair", 120, 2, "kg", "chair.png");
-        // totalAmount();
-        // clearAllItemsFromCart();
+        //decrease the count of an item
+        document.addEventListener('click', function(e){
+            if(e.target.className !== arg.decrease){
+                return;
+            }
+            var name = e.target.parentElement.getAttribute('data-name');
+            removeItemFromCart(name);
+            displayCart();
+            console.log(cart);
+            // console.log(e.target.className);
+
+        });
+
+        //checks if product or add to cart button is defined 
+        if(arg.products == undefined){
+            console.log('You did not define add to cart element it\'s currently' + ' ' + arg.products + '.');
+            return;
+        }
+
+        if(arg.removeAllElement == undefined){
+            console.log('You did not specify the element to remove all item.. You can continue however or make a custom button to remove all item.');
+        }
+
+        console.log(arg);
+
+
+        //select element with ID or class
+        function $selctor(elem){
+            return document.querySelector('.' + elem) || document.querySelector('#' + elem);
+        }
+
+        //saveCart();
+        loadCart();
+        displayCart();
     }
 }

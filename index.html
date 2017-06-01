@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Flexy box</title>
+		<title>Vanilla Cart using HTML5 data attribute</title>
 		<link rel="stylesheet" href="css/main.css">
 	</head>
 	<body>
@@ -21,7 +21,7 @@
         <section class="main">
             <div class="container">
                 <div class="gridContainer" id="products">
-                    <div class="card" data-name="phone" data-price="1200" data-img="http://www.pngall.com/wp-content/uploads/2016/03/Shoes-PNG-Image.png">
+                    <div class="card" data-name="phone" data-count="1" data-price="1200" data-unit="kg" data-img="http://www.pngall.com/wp-content/uploads/2016/03/Shoes-PNG-Image.png">
                         <span class="card_head">
                             <span class="card_title"> Facebook</span>
                         </span>
@@ -30,7 +30,7 @@
                         </div>
                         <button class="add">Add to cart</button>
                     </div>
-                    <div class="card" data-name="fish" data-price="1200" data-img="http://pngimg.com/uploads/running_shoes/running_shoes_PNG5805.png">
+                    <div class="card" data-name="fish" data-count="1" data-price="1200" data-img="http://pngimg.com/uploads/running_shoes/running_shoes_PNG5805.png">
                         <span class="card_head">
                             <span class="card_title"> Facebook</span>
                         </span>
@@ -39,7 +39,7 @@
                         </div>
                         <button class="add">Add to cart</button>
                     </div>
-                    <div class="card" data-name="laptop" data-price="1200" data-img="http://pngimg.com/uploads/men_shoes/men_shoes_PNG7487.png">
+                    <div class="card" data-name="laptop" data-count="1" data-price="1200" data-img="http://pngimg.com/uploads/men_shoes/men_shoes_PNG7487.png">
                         <span class="card_head">
                             <span class="card_title"> Facebook</span>
                         </span>
@@ -100,7 +100,7 @@
         </section>
         <aside>
             <div class="col-md-3">
-                <div class="card">
+                <div class="">
                     <span class="count"></span>
                     <ul class="cartList"></ul>
                     <p class="price"></p>
@@ -131,7 +131,7 @@
                        cartContentElement: 'cartList',//id of cart content listings..
                        cartNodeOutput: "li", //node which we be added to cartContentElement
                        grandTotalElement: 'grandTotal',
-                       dataAttr: ['data-name', 'data-price', 'data-unit', 'data-img']//data attribute to loop through
+                       dataAttr: ['data-name', 'data-price','data-count', 'data-unit', 'data-img']//data attribute to loop through
                        
                    });
 

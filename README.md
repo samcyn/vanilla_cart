@@ -1,2 +1,3 @@
 # vanilla_cart
-Javascript cart system
+Javascript cart plugin using HTML 5 data atrribute.
+Still in progress..

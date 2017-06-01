@@ -1,5 +1,5 @@
-const app = {
-    cartCtrl(arg) {
+var app = {
+    cartCtrl: function(arg){
         arg = arg || {
                        products : undefined,//class of products to be add or add butttons
                        removeAllElement: undefined,//class
@@ -16,45 +16,29 @@ const app = {
                        
                    }
         
-        let cart = [];
+        var cart = [];
         
         //An object constructor that create items...
         function Item (name, price, count, unit, img){
             this.name = name;
             this.price = price;
-            this.count = Number(count);
+            this.count = count;
             this.unit = unit;
             this.img = img;
         }
-
-        /*function Item (){
-            var obj = {};
-            for(var i = 0; i < arguments.length;i++){
-                for(var p in arguments){
-                    obj[arr[p]] = arguments[i];
-                    i++;
-                }
-                break;
-            }
-            console.log(obj);
-            return obj;
-        } */
     
         //addItemToCart(name, price, count)
-        function addItemToCart(arr){
-            console.log(arr);
+        function addItemToCart(name, price, count, unit, img){
             for(var i in cart){
-                if(cart[i].name === arr[0]){
-                    cart[i].count += Number(arr[2]);
-                    //console.log(cart);
-                    saveCart();
-                    return;
+                if(cart[i].name === name){
+                cart[i].count += count;
+                //console.log(cart);
+                saveCart();
+                return;
                 }
             }
             
-            //var item = new Item(arr[0], arr[1], arr[2], arr[3], arr[4]);
-            //spread operator...
-            let item = new Item(...arr);
+            var item = new Item(name, price, count, unit, img);
             cart.unshift(item);
             saveCart();
         }
@@ -81,6 +65,7 @@ const app = {
                     break;
                 }
             }
+
             saveCart();
         }
 
@@ -92,7 +77,7 @@ const app = {
 
         //return total count in the cart
         function countCart(){
-            let totalCount = 0;
+            var totalCount = 0;
             for(var i in cart){
                 totalCount += cart[i].count;
             }
@@ -164,7 +149,7 @@ const app = {
     
             var output = "";
             for(var i in cartArray){
-                output += `<${arg.cartNodeOutput} ${arg.dataAttr[0]} = ${cartArray[i].name}>
+                output += `<${arg.cartNodeOutput} data-name = ${cartArray[i].name}>
                                 ${cartArray[i].name} -- 
                                 <span class="${arg.removeAllElement}">X</span>
                                 <span class="${arg.increase}"> + </span>
@@ -187,32 +172,24 @@ const app = {
         
         //add an item to cart
         document.addEventListener('click', function(event){
-           var arr = [];
+           // var obj = {}
             if(event.target.className !== arg.products){
                 return;
             }
             //get the attribute form the current element or its parent
-            /*
             var name = event.target.getAttribute(arg.dataAttr[0]) || event.target.parentElement.getAttribute(arg.dataAttr[0]);
             var price = event.target.getAttribute(arg.dataAttr[1]) || event.target.parentElement.getAttribute(arg.dataAttr[1]);
             var unit = event.target.getAttribute(arg.dataAttr[2]) || event.target.parentElement.getAttribute(arg.dataAttr[2]);
-            var img = event.target.getAttribute(arg.dataAttr[3]) || event.target.parentElement.getAttribute(arg.dataAttr[3]);*/
+            var img = event.target.getAttribute(arg.dataAttr[3]) || event.target.parentElement.getAttribute(arg.dataAttr[3]);
 
-            //saving each attribute passed into an empty array i.e arr...
-            for(var i = 0; i < arg.dataAttr.length; i++){
-                for(var p in arg.dataAttr){
-                    arr[p] = event.target.getAttribute(arg.dataAttr[i]) || event.target.parentElement.getAttribute(arg.dataAttr[i]);
-                    i++;
-                }
-                break;
-            }
-
-            //console.log(arr);     
-           
-            addItemToCart(arr);
+            
+            
+            //console.log(event.target.attributes[1].nodeValue);
+            //console.log(event.target.getAttribute('data-name'));
+            addItemToCart(name, price, 1, unit, img);
             displayCart();
             document.querySelector('html').classList.add('open');
-        
+            console.log(cart);
         });
 
        // remove an item from cart
@@ -222,7 +199,7 @@ const app = {
             }
             e.target.parentElement.remove();
             //console.log( e.target.parentElement.getAttribute('data-name'));
-            var name = e.target.parentElement.getAttribute(arg.dataAttr[0]);
+            var name = e.target.parentElement.getAttribute('data-name');
             removeItemFromCartAll(name);
             displayCart();
             // console.log(e.target.className);
@@ -236,10 +213,8 @@ const app = {
             }
             //e.target.parentElement.remove();
             //console.log( e.target.parentElement.getAttribute('data-name'));
-            var name = e.target.parentElement.getAttribute(arg.dataAttr[0]);
-
-            //pass in an array here..
-            addItemToCart([name, 0, 1, 0, 0]);
+            var name = e.target.parentElement.getAttribute('data-name');
+            addItemToCart(name, 0, 1, 0, 0);
             displayCart();
             //console.log(cart);
             // console.log(e.target.className);
@@ -251,7 +226,7 @@ const app = {
             if(e.target.className !== arg.decrease){
                 return;
             }
-            var name = e.target.parentElement.getAttribute(arg.dataAttr[0]);
+            var name = e.target.parentElement.getAttribute('data-name');
             removeItemFromCart(name);
             displayCart();
             console.log(cart);
@@ -277,15 +252,7 @@ const app = {
             return document.querySelector('.' + elem) || document.querySelector('#' + elem);
         }
 
-
-
-
-    
-
-
-
-        
-        saveCart();
+        //saveCart();
         loadCart();
         displayCart();
     }

@@ -17,35 +17,82 @@ var app = {
                    }
         
         var cart = [];
-        
-        //An object constructor that create items...
-        function Item (name, price, count, unit, img){
-            this.name = name;
-            this.price = price;
-            this.count = Number(count);
-            this.unit = unit;
-            this.img = img;
+        var arr = [];
+
+        //sort the array into this format//
+        function sorter(array, funcs, orders) {
+            funcs = funcs || {};
+            orders = orders || {};
+            array.sort(funcs.general);
+            if (Array.isArray(orders.top)) {
+                orders.top.slice().reverse().forEach(function(value) {
+                    array.sort(funcs.top.bind(value));
+                });
+            }
+
+            if (Array.isArray(orders.bottom)) {
+                orders.bottom.forEach(function(value) {
+                    array.sort(funcs.bottom.bind(value));
+                });
+            }
+
+            return array;
         }
 
-        /*function Item (){
+        sorter(arg.dataAttr, {
+            general: function (a, b) {
+                return a.localeCompare(b);
+            },
+            top: function (a, b) {
+                return +(!b.localeCompare(this));
+            },
+            bottom: function (a, b) {
+                return +(!a.localeCompare(this));
+            }
+        }, {
+            top: ['data-name', 'data-price','data-count'],
+            bottom: ['data-img']
+        });
+        //sorting array //
+       // console.log(arg.dataAttr);
+
+        //An object constructor that create items...
+        // function Item (name, price, count, unit, img){
+        //     this.name = name;
+        //     this.price = price;
+        //     this.count = Number(count);
+        //     this.unit = unit;
+        //     this.img = img;
+        //     console.log(this);
+
+        // }
+
+        // an object constructor to create new items
+        function Item (){
             var obj = {};
             for(var i = 0; i < arguments.length;i++){
                 for(var p in arguments){
-                    obj[arr[p]] = arguments[i];
+
+                    //dataAttr passed  is used to create  new object keys
+                    //the first value in argument will match dataAttr
+                    //checking id for id for example
+                    obj[arg.dataAttr[p]] = arguments[i];
                     i++;
                 }
                 break;
             }
             console.log(obj);
             return obj;
-        } */
+        } 
     
         //addItemToCart(name, price, count)
         function addItemToCart(arr){
             console.log(arr);
             for(var i in cart){
-                if(cart[i].name === arr[0]){
-                    cart[i].count += Number(arr[2]);
+                //a test to match the id this time we are using name ..[arg.dataAttr[0]
+                if(cart[i][arg.dataAttr[0]] === arr[0]){
+                    // the second item in dataAttr must be data-count....
+                    cart[i][arg.dataAttr[2]] =  Number(cart[i][arg.dataAttr[2]]) + Number(arr[2]);
                     //console.log(cart);
                     saveCart();
                     return;
@@ -53,18 +100,22 @@ var app = {
             }
             
             //var item = new Item(arr[0], arr[1], arr[2], arr[3], arr[4]);
-            //spread operator...
+            //here we used a spread operator to list the content of arr...
             var item = new Item(...arr);
             cart.unshift(item);
+            console.log(cart);
             saveCart();
         }
 
         //removeItemFromCart(name) from the cart, just one item
         function removeItemFromCart(name){
             for(var i in cart){
-                if(cart[i].name === name){
-                cart[i].count--;
-                if(cart[i].count === 0){
+                //if what ever id passed match the first item in dataAttr...
+                if(cart[i][arg.dataAttr[0]] === name){
+                    //reduce count by 1
+                    cart[i][arg.dataAttr[2]]--;
+                    //if count is reduced to zero splice it..
+                if(cart[i][arg.dataAttr[2]] === 0){
                     cart.splice(i, 1);
                 }
                 break;
@@ -76,7 +127,8 @@ var app = {
         //removeItemFromCartAll, all items....
         function removeItemFromCartAll(name){
             for(var i in cart){
-                if(cart[i].name === name){
+                //if whatever is passed matches the first item...
+                if(cart[i][arg.dataAttr[0]] === name){
                     cart.splice(i, 1);
                     break;
                 }
@@ -94,7 +146,8 @@ var app = {
         function countCart(){
             var totalCount = 0;
             for(var i in cart){
-                totalCount += cart[i].count;
+                //remember dataAttr[2] is for count
+                totalCount += Number(cart[i][arg.dataAttr[2]]);
             }
             return totalCount;
         }
@@ -103,12 +156,13 @@ var app = {
         function totalCart(){
             var totalCost = 0;
             for(var i in cart){
-                totalCost += cart[i].price * cart[i].count;
+                totalCost += Number(cart[i][arg.dataAttr[1]]) * Number(cart[i][arg.dataAttr[2]]);
             }
             return totalCost;
         }
 
-        //listCart return array[] of items
+        
+        //save a copy of cart
         function listCart(){
             var cartCopy = [];
             
@@ -164,8 +218,10 @@ var app = {
     
             var output = "";
             for(var i in cartArray){
-                output += `<${arg.cartNodeOutput} ${arg.dataAttr[0]} = ${cartArray[i].name}>
-                                ${cartArray[i].name} -- 
+                // output cart in list..arg.dataAttr[0] is the first item in the array...
+                output += `<${arg.cartNodeOutput} ${arg.dataAttr[0]} = ${cartArray[i][arg.dataAttr[0]]}>
+                                ${cartArray[i][arg.dataAttr[0]]} -- 
+                    
                                 <span class="${arg.removeAllElement}">X</span>
                                 <span class="${arg.increase}"> + </span>
                                 <span class="${arg.decrease}"> - </span>
@@ -187,7 +243,7 @@ var app = {
         
         //add an item to cart
         document.addEventListener('click', function(event){
-           var arr = [];
+           
             if(event.target.className !== arg.products){
                 return;
             }
@@ -285,7 +341,7 @@ var app = {
 
 
         
-        saveCart();
+        //saveCart();
         loadCart();
         displayCart();
     }

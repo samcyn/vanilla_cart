@@ -113,7 +113,7 @@
 
         <button id="clearCart" title="Clear Cart">CL</button>
 
-        <script src="js/main.js"></script>
+        <script src="js/es6-main.js"></script>
         <script>
             document.onreadystatechange = function () {
                 if (document.readyState === "complete") {
@@ -135,7 +135,7 @@
                        
                    });
 
-                   document.getElementsByClassName('toggler')[0].addEventListener('click', function(){
+                   document.getElementsByClassName('toggler')[0].addEventListener('click', () => {
                        document.querySelector('html').classList.toggle('open');
                    });
 

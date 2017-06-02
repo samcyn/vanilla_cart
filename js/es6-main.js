@@ -18,31 +18,20 @@ const app = {
         
         let cart = [];
         
-        //An object constructor that create items...
-        function Item (name, price, count, unit, img){
-            this.name = name;
-            this.price = price;
-            this.count = Number(count);
-            this.unit = unit;
-            this.img = img;
-        }
-
-        /*function Item (){
-            var obj = {};
-            for(var i = 0; i < arguments.length;i++){
-                for(var p in arguments){
-                    obj[arr[p]] = arguments[i];
-                    i++;
-                }
-                break;
+        //Object constructor that create items using a spread operator...
+        class Item {
+            constructor(...arr){
+                this.name = name;
+                this.price = price;
+                this.count = Number(count);
+                this.unit = unit;
+                this.img = img;
             }
-            console.log(obj);
-            return obj;
-        } */
+        }
     
-        //addItemToCart(name, price, count)
+        //addItemToCart(name, price, count)...
         function addItemToCart(arr){
-            console.log(arr);
+            // console.log(arr);
             for(var i in cart){
                 if(cart[i].name === arr[0]){
                     cart[i].count += Number(arr[2]);
@@ -52,14 +41,13 @@ const app = {
                 }
             }
             
-            //var item = new Item(arr[0], arr[1], arr[2], arr[3], arr[4]);
-            //spread operator...
+            //Create new instance of the Item object...
             let item = new Item(...arr);
             cart.unshift(item);
             saveCart();
         }
 
-        //removeItemFromCart(name) from the cart, just one item
+        //removeItemFromCart(name) from the cart, just one item...
         function removeItemFromCart(name){
             for(var i in cart){
                 if(cart[i].name === name){
@@ -84,13 +72,13 @@ const app = {
             saveCart();
         }
 
-        //clear cart
+        //clear cart...
         function clearCart(){
             cart = [];
             saveCart();
         }
 
-        //return total count in the cart
+        //return total count in the cart...
         function countCart(){
             let totalCount = 0;
             for(var i in cart){
@@ -99,32 +87,31 @@ const app = {
             return totalCount;
         }
 
-        //return total cost
+        //return total cost...
         function totalCart(){
-            var totalCost = 0;
+            let totalCost = 0;
             for(var i in cart){
                 totalCost += cart[i].price * cart[i].count;
             }
             return totalCost;
         }
 
-        //listCart return array[] of items
+        //return array of cart items...
         function listCart(){
-            var cartCopy = [];
+            let cartCopy = [];
             
             for(var i in cart){
-                var item = cart[i];
-                var itemCopy = {};
+                let item = cart[i];
+                let itemCopy = {};
                 for(var p in item){
                     itemCopy[p] = item[p];
                 }
                 cartCopy.push(itemCopy);
             }
-           // console.log(cartCopy);
             return cartCopy;
         }
 
-         //calculates service charges here....
+         //calculate service charges...
         function serviceChargeCtrl(percent){
             serviceCharge = 0;
             if(isNaN(percent)){
@@ -134,9 +121,8 @@ const app = {
             return serviceCharge;
         }
 
-        //calculates service charges here....
+        //return delivery fee....
         function deliveryCtrl(dvFee){
-            //console.log(isNaN(dvFee));
             if(isNaN(dvFee)){
                 return 0;
             }
@@ -146,23 +132,21 @@ const app = {
             return dvFee;
         }
 
-        //save cart.............
+        //save cart...
         function saveCart(){
             localStorage.setItem("shoppingCart", JSON.stringify(cart));
         }
 
-        //load the cart
+        //load the cart...
         function loadCart(){
             cart = JSON.parse(localStorage.getItem("shoppingCart"));
         }
-
        
-        //display items in cart
+        //display items in cart...
         function displayCart(){
-            var cartArray = listCart();
+            let cartArray = listCart();
         
-    
-            var output = "";
+            let output = "";
             for(var i in cartArray){
                 output += `<${arg.cartNodeOutput} ${arg.dataAttr[0]} = ${cartArray[i].name}>
                                 ${cartArray[i].name} -- 
@@ -172,42 +156,30 @@ const app = {
                           </${arg.cartNodeOutput}>`;
             }
 
-           
-            $selctor(arg.cartContentElement).innerHTML = output;
-            $selctor(arg.priceElement).innerHTML = totalCart();
-            $selctor(arg.itemCountElement).innerHTML =  countCart();
-            $selctor(arg.serviceChargeElement).innerHTML = serviceChargeCtrl(Number(arg.serviceChargeValue));
-            $selctor(arg.deliveryFeeElement).innerHTML = deliveryCtrl(Number(arg.deliveryFeeValue));
-            $selctor(arg.grandTotalElement).innerHTML = totalCart() + serviceChargeCtrl(Number(arg.serviceChargeValue)) + deliveryCtrl(Number(arg.deliveryFeeValue));
-            
+            $jvcart(arg.cartContentElement).innerHTML = output;
+            $jvcart(arg.priceElement).innerHTML = totalCart();
+            $jvcart(arg.itemCountElement).innerHTML =  countCart();
+            $jvcart(arg.serviceChargeElement).innerHTML = serviceChargeCtrl(Number(arg.serviceChargeValue));
+            $jvcart(arg.deliveryFeeElement).innerHTML = deliveryCtrl(Number(arg.deliveryFeeValue));
+            $jvcart(arg.grandTotalElement).innerHTML = totalCart() + serviceChargeCtrl(Number(arg.serviceChargeValue)) + deliveryCtrl(Number(arg.deliveryFeeValue));
             
         }
 
-       
-        
-        //add an item to cart
-        document.addEventListener('click', function(event){
-           var arr = [];
-            if(event.target.className !== arg.products){
-                return;
-            }
-            //get the attribute form the current element or its parent
-            /*
-            var name = event.target.getAttribute(arg.dataAttr[0]) || event.target.parentElement.getAttribute(arg.dataAttr[0]);
-            var price = event.target.getAttribute(arg.dataAttr[1]) || event.target.parentElement.getAttribute(arg.dataAttr[1]);
-            var unit = event.target.getAttribute(arg.dataAttr[2]) || event.target.parentElement.getAttribute(arg.dataAttr[2]);
-            var img = event.target.getAttribute(arg.dataAttr[3]) || event.target.parentElement.getAttribute(arg.dataAttr[3]);*/
+        //add an item to cart...
+        document.addEventListener('click', (e) => {
+            let arr = [];
+                if(e.target.className !== arg.products){
+                    return;
+                }
 
             //saving each attribute passed into an empty array i.e arr...
             for(var i = 0; i < arg.dataAttr.length; i++){
                 for(var p in arg.dataAttr){
-                    arr[p] = event.target.getAttribute(arg.dataAttr[i]) || event.target.parentElement.getAttribute(arg.dataAttr[i]);
+                    arr[p] = e.target.getAttribute(arg.dataAttr[i]) || e.target.parentElement.getAttribute(arg.dataAttr[i]);
                     i++;
                 }
                 break;
-            }
-
-            //console.log(arr);     
+            }  
            
             addItemToCart(arr);
             displayCart();
@@ -215,75 +187,60 @@ const app = {
         
         });
 
-       // remove an item from cart
-       document.addEventListener('click', function(e){
+       // remove an item from cart...
+       document.addEventListener('click', (e) => {
             if(e.target.className !== arg.removeAllElement){
                 return;
             }
+
             e.target.parentElement.remove();
-            //console.log( e.target.parentElement.getAttribute('data-name'));
-            var name = e.target.parentElement.getAttribute(arg.dataAttr[0]);
+
+            let name = e.target.parentElement.getAttribute(arg.dataAttr[0]);
             removeItemFromCartAll(name);
             displayCart();
-            // console.log(e.target.className);
 
         });
 
-        // increase the count of an item
-         document.addEventListener('click', function(e){
+        // increase the count of an item...
+         document.addEventListener('click', (e) => {
             if(e.target.className !== arg.increase){
                 return;
             }
-            //e.target.parentElement.remove();
-            //console.log( e.target.parentElement.getAttribute('data-name'));
-            var name = e.target.parentElement.getAttribute(arg.dataAttr[0]);
+            
+            let name = e.target.parentElement.getAttribute(arg.dataAttr[0]);
 
-            //pass in an array here..
+            //pass in an array here...
             addItemToCart([name, 0, 1, 0, 0]);
             displayCart();
-            //console.log(cart);
-            // console.log(e.target.className);
 
         });
 
-        //decrease the count of an item
-        document.addEventListener('click', function(e){
+        //decrease the count of an item...
+        document.addEventListener('click', (e) => {
             if(e.target.className !== arg.decrease){
                 return;
             }
-            var name = e.target.parentElement.getAttribute(arg.dataAttr[0]);
+            let name = e.target.parentElement.getAttribute(arg.dataAttr[0]);
             removeItemFromCart(name);
             displayCart();
-            console.log(cart);
-            // console.log(e.target.className);
 
         });
 
-        //checks if product or add to cart button is defined 
+        //checks if product or add to cart button is defined...
         if(arg.products == undefined){
-            console.log('You did not define add to cart element it\'s currently' + ' ' + arg.products + '.');
+            console.log(`You did not define add to cart element it's currently ${arg.products}.`);
             return;
         }
 
+        //checks if remove all cart items button is defined...
         if(arg.removeAllElement == undefined){
-            console.log('You did not specify the element to remove all item.. You can continue however or make a custom button to remove all item.');
+            console.log(`You did not specify the element to remove all item.. You can continue however or make a custom button to remove all item.`);
         }
 
-        console.log(arg);
-
-
-        //select element with ID or class
-        function $selctor(elem){
+        //select element with ID or class...
+        function $jvcart(elem){
             return document.querySelector('.' + elem) || document.querySelector('#' + elem);
         }
-
-
-
-
-    
-
-
-
         
         saveCart();
         loadCart();

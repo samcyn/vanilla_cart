@@ -42,7 +42,7 @@ const app = {
             }
             
             //Create new instance of the Item object...
-            let item = new Item(...arr);
+            const item = new Item(...arr);
             cart.unshift(item);
             saveCart();
         }

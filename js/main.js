@@ -1,4 +1,7 @@
+/*======Activating ++ method for Loops used======*/
 /*jslint plusplus: true*/
+/*======End of Activating ++ method for Loops used======*/
+
 var app = {
     cartCtrl: function (arg) {
         'use strict';

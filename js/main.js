@@ -65,7 +65,19 @@ var app = {
             }
             return obj;
         }
+		
+
+        //saving cart to local Storage.............
+        function saveCart() {
+            localStorage.setItem("shoppingCart", JSON.stringify(cart));
+        }
+
+        //load the cart
+        function loadCart() {
+            cart = JSON.parse(localStorage.getItem("shoppingCart"));
+        }
     
+		
         //addItemToCart(name, price, count)
         function addItemToCart(arr) {
 			var i = 0;
@@ -179,16 +191,6 @@ var app = {
                 return 0;
             }
             return dvFee;
-        }
-
-        //save cart.............
-        function saveCart(){
-            localStorage.setItem("shoppingCart", JSON.stringify(cart));
-        }
-
-        //load the cart
-        function loadCart(){
-            cart = JSON.parse(localStorage.getItem("shoppingCart"));
         }
 
        

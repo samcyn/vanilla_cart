@@ -81,15 +81,15 @@ var app = {
         //addItemToCart(name, price, count)
         function addItemToCart(arr) {
 			var i = 0;
-            for (i in cart) {
-                //a test to match the id this time we are using name ..[arg.dataAttr[0]
-                if (cart[i][arg.dataAttr[0]] === arr[0]) {
-                    // the second item in dataAttr must be data-count....
-                    cart[i][arg.dataAttr[2]] =  Number(cart[i][arg.dataAttr[2]]) + Number(arr[2]);
-                    //console.log(cart);
-                    saveCart();
-                    return;
-                }
+			for (i in cart) {
+				//a test to match the id this time we are using name ..[arg.dataAttr[0]
+				if (cart[i][arg.dataAttr[0]] === arr[0]) {
+					// the second item in dataAttr must be data-count....
+					cart[i][arg.dataAttr[2]] =  Number(cart[i][arg.dataAttr[2]]) + Number(arr[2]);
+					//console.log(cart);
+					saveCart();
+					return;
+				}
             }
             
             //var item = new Item(arr[0], arr[1], arr[2], arr[3], arr[4]);

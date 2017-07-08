@@ -1,43 +1,26 @@
+/*======Activating ++ method for Loops used======*/
+/*jslint plusplus: true*/
+/*======End of Activating ++ method for Loops used======*/
+
 var app = {
-    cartCtrl: function(arg){
+    cartCtrl: function (arg) {
+        'use strict';
         arg = arg || {
-                       products : undefined,//class of products to be add or add butttons
-                       removeAllElement: undefined,//class
-                       increase: undefined,//class
-                       decrease: undefined,
-                       priceElement: undefined,//id
-                       serviceChargeElement: undefined, // id of service charge elememt
-                       serviceChargeValue: undefined, //percentage value
-                       deliveryFeeElement: undefined,//id of delivery fee element
-                       deliveryFeeValue: undefined, //integer
-                       cartContentElement: undefined,//id of cart content listings..
-                       cartNodeOutput: "li", //node which we be added to cartContentElement
-                       grandTotalElement: undefined
-                       
-                   }
+		    products : undefined,//class of products to be add or add butttons
+		    removeAllElement: undefined,//class
+		    increase: undefined,//class
+		    decrease: undefined,
+		    priceElement: undefined,//id
+		    serviceChargeElement: undefined, // id of service charge elememt
+		    serviceChargeValue: undefined, //percentage value
+		    deliveryFeeElement: undefined,//id of delivery fee element
+		    deliveryFeeValue: undefined, //integer
+		    cartContentElement: undefined,//id of cart content listings..
+		    cartNodeOutput: "li", //node which we be added to cartContentElement
+		    grandTotalElement: undefined
+        };
         
-        var cart = [];
-        var arr = [];
-
-        //sort the array into this format//
-        function sorter(array, funcs, orders) {
-            funcs = funcs || {};
-            orders = orders || {};
-            array.sort(funcs.general);
-            if (Array.isArray(orders.top)) {
-                orders.top.slice().reverse().forEach(function(value) {
-                    array.sort(funcs.top.bind(value));
-                });
-            }
-
-            if (Array.isArray(orders.bottom)) {
-                orders.bottom.forEach(function(value) {
-                    array.sort(funcs.bottom.bind(value));
-                });
-            }
-
-            return array;
-        }
+        var cart = [], arr = [], sorter;
 
         sorter(arg.dataAttr, {
             general: function (a, b) {
@@ -50,7 +33,7 @@ var app = {
                 return +(!a.localeCompare(this));
             }
         }, {
-            top: ['data-name', 'data-price','data-count'],
+            top: ['data-name', 'data-price', 'data-count'],
             bottom: ['data-img']
         });
         //sorting array //
@@ -68,11 +51,10 @@ var app = {
         // }
 
         // an object constructor to create new items
-        function Item (){
-            var obj = {};
-            for(var i = 0; i < arguments.length;i++){
-                for(var p in arguments){
-
+        function Item() {
+			var i = 0, obj = {}, p;
+            for (i = 0; i < arguments.length; i++) {
+                for (p = 0; p < arguments.length; p++) {
                     //dataAttr passed  is used to create  new object keys
                     //the first value in argument will match dataAttr
                     //checking id for id for example
@@ -81,22 +63,33 @@ var app = {
                 }
                 break;
             }
-            console.log(obj);
             return obj;
-        } 
+        }
+		
+
+        //saving cart to local Storage.............
+        function saveCart() {
+            localStorage.setItem("shoppingCart", JSON.stringify(cart));
+        }
+
+        //load the cart
+        function loadCart() {
+            cart = JSON.parse(localStorage.getItem("shoppingCart"));
+        }
     
+		
         //addItemToCart(name, price, count)
-        function addItemToCart(arr){
-            console.log(arr);
-            for(var i in cart){
-                //a test to match the id this time we are using name ..[arg.dataAttr[0]
-                if(cart[i][arg.dataAttr[0]] === arr[0]){
-                    // the second item in dataAttr must be data-count....
-                    cart[i][arg.dataAttr[2]] =  Number(cart[i][arg.dataAttr[2]]) + Number(arr[2]);
-                    //console.log(cart);
-                    saveCart();
-                    return;
-                }
+        function addItemToCart(arr) {
+			var i = 0;
+			for (i in cart) {
+				//a test to match the id this time we are using name ..[arg.dataAttr[0]
+				if (cart[i][arg.dataAttr[0]] === arr[0]) {
+					// the second item in dataAttr must be data-count....
+					cart[i][arg.dataAttr[2]] =  Number(cart[i][arg.dataAttr[2]]) + Number(arr[2]);
+					//console.log(cart);
+					saveCart();
+					return;
+				}
             }
             
             //var item = new Item(arr[0], arr[1], arr[2], arr[3], arr[4]);
@@ -108,7 +101,7 @@ var app = {
         }
 
         //removeItemFromCart(name) from the cart, just one item
-        function removeItemFromCart(name){
+        function removeItemFromCart (name) {
             for(var i in cart){
                 //if what ever id passed match the first item in dataAttr...
                 if(cart[i][arg.dataAttr[0]] === name){
@@ -125,7 +118,7 @@ var app = {
         }
 
         //removeItemFromCartAll, all items....
-        function removeItemFromCartAll(name){
+        function removeItemFromCartAll (name) {
             for(var i in cart){
                 //if whatever is passed matches the first item...
                 if(cart[i][arg.dataAttr[0]] === name){
@@ -179,7 +172,7 @@ var app = {
         }
 
          //calculates service charges here....
-        function serviceChargeCtrl(percent){
+        function serviceChargeCtrl (percent) {
             serviceCharge = 0;
             if(isNaN(percent)){
                 return serviceCharge;
@@ -189,7 +182,7 @@ var app = {
         }
 
         //calculates service charges here....
-        function deliveryCtrl(dvFee){
+        function deliveryCtrl (dvFee) {
             //console.log(isNaN(dvFee));
             if(isNaN(dvFee)){
                 return 0;
@@ -200,16 +193,6 @@ var app = {
             return dvFee;
         }
 
-        //save cart.............
-        function saveCart(){
-            localStorage.setItem("shoppingCart", JSON.stringify(cart));
-        }
-
-        //load the cart
-        function loadCart(){
-            cart = JSON.parse(localStorage.getItem("shoppingCart"));
-        }
-
        
         //display items in cart
         function displayCart(){
@@ -217,7 +200,7 @@ var app = {
         
     
             var output = "";
-            for(var i in cartArray){
+            for (var i in cartArray) {
                 // output cart in list..arg.dataAttr[0] is the first item in the array...
                 output += `<${arg.cartNodeOutput} ${arg.dataAttr[0]} = ${cartArray[i][arg.dataAttr[0]]}>
                                 ${cartArray[i][arg.dataAttr[0]]} -- 
@@ -255,7 +238,7 @@ var app = {
             var img = event.target.getAttribute(arg.dataAttr[3]) || event.target.parentElement.getAttribute(arg.dataAttr[3]);*/
 
             //saving each attribute passed into an empty array i.e arr...
-            for(var i = 0; i < arg.dataAttr.length; i++){
+            for (var i = 0; i < arg.dataAttr.length; i++) {
                 for(var p in arg.dataAttr){
                     arr[p] = event.target.getAttribute(arg.dataAttr[i]) || event.target.parentElement.getAttribute(arg.dataAttr[i]);
                     i++;
@@ -303,7 +286,7 @@ var app = {
         });
 
         //decrease the count of an item
-        document.addEventListener('click', function(e){
+        document.addEventListener('click', function (e) {
             if(e.target.className !== arg.decrease){
                 return;
             }

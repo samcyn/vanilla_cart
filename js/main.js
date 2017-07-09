@@ -84,6 +84,7 @@ var app = {
             console.log(obj);
             return obj;
         } 
+		var cart = [];
     
         //addItemToCart(name, price, count)
         function addItemToCart(arr){
@@ -126,6 +127,7 @@ var app = {
 
         //removeItemFromCartAll, all items....
         function removeItemFromCartAll(name){
+			
             for(var i in cart){
                 //if whatever is passed matches the first item...
                 if(cart[i][arg.dataAttr[0]] === name){
@@ -133,15 +135,20 @@ var app = {
                     break;
                 }
             }
-            saveCart();
         }
 
         //clear cart
         function clearCart(){
             cart = [];
             saveCart();
+			console.log(cart);
         }
-
+		/*==activating the clear cart button==*/
+		var clear = document.getElementById('clearCart');
+		clear.addEventListener('click', function(){console.log($count)});
+		/*==End of activating the clear cart button==*/
+		
+		
         //return total count in the cart
         function countCart(){
             var totalCount = 0;
@@ -225,7 +232,7 @@ var app = {
                                 <span class="${arg.removeAllElement}">X</span>
                                 <span class="${arg.increase}"> + </span>
                                 <span class="${arg.decrease}"> - </span>
-                          </${arg.cartNodeOutput}>`;
+                          </${arg.cartNodeOutput}><br/>`;
             }
 
            
@@ -301,12 +308,25 @@ var app = {
             // console.log(e.target.className);
 
         });
-
+		/*==catching the count class innerHtml in a variable==*/
+		var $count = document.getElementsByClassName('count')[0].innerHTML;
+		/*==End of catching the count class innerHtml in var==*/
+		
+		//saving each attribute passed into an empty array i.e arr...
+//            for(var i = 0; i < $count[p].length; i++){
+//                for(var p in arg.dataAttr){
+//                    arr[p] = event.target.getAttribute(arg.dataAttr[i]) || event.target.parentElement.getAttribute(arg.dataAttr[i]);
+//                    i++;
+//                }
+//                break;
+//            }
+		
         //decrease the count of an item
         document.addEventListener('click', function(e){
             if(e.target.className !== arg.decrease){
                 return;
-            }
+            };
+			if(e.target.className.innerHtml){};
             var name = e.target.parentElement.getAttribute(arg.dataAttr[0]);
             removeItemFromCart(name);
             displayCart();

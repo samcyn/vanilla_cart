@@ -240,7 +240,7 @@ var app = {
         function clearCart () {
             cart = [];
             saveCart();
-			output = "";
+			displayCart();
 			console.log(cart);
         }
 		/*==activating the clear cart button==*/

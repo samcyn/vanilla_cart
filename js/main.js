@@ -99,6 +99,7 @@ var app = {
                     return;
                 }
             }
+			
             
             //var item = new Item(arr[0], arr[1], arr[2], arr[3], arr[4]);
             //here we used a spread operator to list the content of arr...
@@ -145,7 +146,7 @@ var app = {
         }
 		/*==activating the clear cart button==*/
 		var clear = document.getElementById('clearCart');
-		clear.addEventListener('click', function(){console.log($count)});
+		clear.addEventListener('click', clearCart);
 		/*==End of activating the clear cart button==*/
 		
 		
@@ -269,7 +270,6 @@ var app = {
                 }
                 break;
             }
-
             //console.log(arr);     
            
             addItemToCart(arr);

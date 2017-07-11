@@ -138,18 +138,7 @@ var app = {
             }
         }
 
-        //clear cart
-        function clearCart(){
-            cart = [];
-            saveCart();
-			console.log(cart);
-        }
-		/*==activating the clear cart button==*/
-		var clear = document.getElementById('clearCart');
-		clear.addEventListener('click', clearCart);
-		/*==End of activating the clear cart button==*/
-		
-		
+       
         //return total count in the cart
         function countCart(){
             var totalCount = 0;
@@ -220,7 +209,7 @@ var app = {
 
        
         //display items in cart
-        function displayCart(){
+        function displayCart () {
             var cartArray = listCart();
         
     
@@ -247,7 +236,19 @@ var app = {
             
         }
 
-       
+        //clear cart
+        function clearCart () {
+            cart = [];
+            saveCart();
+			output = "";
+			console.log(cart);
+        }
+		/*==activating the clear cart button==*/
+		var clear = document.getElementById('clearCart');
+		clear.addEventListener('click', clearCart);
+		/*==End of activating the clear cart button==*/
+		
+		
         
         //add an item to cart
         document.addEventListener('click', function(event){

@@ -1,23 +1,23 @@
+/*jslint plusplus: true*/
 var app = {
-    cartCtrl: function(arg){
+    cartCtrl: function (arg) {
         arg = arg || {
-                       products : undefined,//class of products to be add or add butttons
-                       removeAllElement: undefined,//class
-                       increase: undefined,//class
-                       decrease: undefined,
-                       priceElement: undefined,//id
-                       serviceChargeElement: undefined, // id of service charge elememt
-                       serviceChargeValue: undefined, //percentage value
-                       deliveryFeeElement: undefined,//id of delivery fee element
-                       deliveryFeeValue: undefined, //integer
-                       cartContentElement: undefined,//id of cart content listings..
-                       cartNodeOutput: "li", //node which we be added to cartContentElement
-                       grandTotalElement: undefined
-                       
-                   }
+		    products : undefined,//class of products to be add or add butttons
+		    removeAllElement: undefined,//class
+		    increase: undefined,//class
+		    decrease: undefined,
+		    priceElement: undefined,//id
+		    serviceChargeElement: undefined, // id of service charge elememt
+		    serviceChargeValue: undefined, //percentage value
+		    deliveryFeeElement: undefined,//id of delivery fee element
+		    deliveryFeeValue: undefined, //integer
+		    cartContentElement: undefined,//id of cart content listings..
+		    cartNodeOutput: "li", //node which we be added to cartContentElement
+		    grandTotalElement: undefined
+		};
         
-        var cart = [];
-        var arr = [];
+        var cart = [],
+            arr = [];
 
         //sort the array into this format//
         function sorter(array, funcs, orders) {
@@ -25,13 +25,13 @@ var app = {
             orders = orders || {};
             array.sort(funcs.general);
             if (Array.isArray(orders.top)) {
-                orders.top.slice().reverse().forEach(function(value) {
+                orders.top.slice().reverse().forEach(function (value) {
                     array.sort(funcs.top.bind(value));
                 });
             }
 
             if (Array.isArray(orders.bottom)) {
-                orders.bottom.forEach(function(value) {
+                orders.bottom.forEach(function (value) {
                     array.sort(funcs.bottom.bind(value));
                 });
             }
@@ -50,7 +50,7 @@ var app = {
                 return +(!a.localeCompare(this));
             }
         }, {
-            top: ['data-name', 'data-price','data-count'],
+            top: ['data-name', 'data-price', 'data-count'],
             bottom: ['data-img']
         });
         //sorting array //
@@ -68,10 +68,11 @@ var app = {
         // }
 
         // an object constructor to create new items
-        function Item (){
-            var obj = {};
-            for(var i = 0; i < arguments.length;i++){
-                for(var p in arguments){
+        function Item() {
+            var obj = {},
+		        i = 0;
+            for (i = 0; i < arguments.length; i++) {
+                for (var p in arguments){
 
                     //dataAttr passed  is used to create  new object keys
                     //the first value in argument will match dataAttr
@@ -84,6 +85,7 @@ var app = {
             console.log(obj);
             return obj;
         } 
+		var cart = [];
     
         //addItemToCart(name, price, count)
         function addItemToCart(arr){
@@ -98,6 +100,7 @@ var app = {
                     return;
                 }
             }
+			
             
             //var item = new Item(arr[0], arr[1], arr[2], arr[3], arr[4]);
             //here we used a spread operator to list the content of arr...
@@ -126,6 +129,7 @@ var app = {
 
         //removeItemFromCartAll, all items....
         function removeItemFromCartAll(name){
+			
             for(var i in cart){
                 //if whatever is passed matches the first item...
                 if(cart[i][arg.dataAttr[0]] === name){
@@ -133,15 +137,9 @@ var app = {
                     break;
                 }
             }
-            saveCart();
         }
 
-        //clear cart
-        function clearCart(){
-            cart = [];
-            saveCart();
-        }
-
+       
         //return total count in the cart
         function countCart(){
             var totalCount = 0;
@@ -212,7 +210,7 @@ var app = {
 
        
         //display items in cart
-        function displayCart(){
+        function displayCart () {
             var cartArray = listCart();
         
     
@@ -225,7 +223,7 @@ var app = {
                                 <span class="${arg.removeAllElement}">X</span>
                                 <span class="${arg.increase}"> + </span>
                                 <span class="${arg.decrease}"> - </span>
-                          </${arg.cartNodeOutput}>`;
+                          </${arg.cartNodeOutput}><br/>`;
             }
 
            
@@ -239,7 +237,19 @@ var app = {
             
         }
 
-       
+        //clear cart
+        function clearCart () {
+            cart = [];
+            saveCart();
+			displayCart();
+			console.log(cart);
+        }
+		/*==activating the clear cart button==*/
+		var clear = document.getElementById('clearCart');
+		clear.addEventListener('click', clearCart);
+		/*==End of activating the clear cart button==*/
+		
+		
         
         //add an item to cart
         document.addEventListener('click', function(event){
@@ -262,7 +272,6 @@ var app = {
                 }
                 break;
             }
-
             //console.log(arr);     
            
             addItemToCart(arr);
@@ -301,12 +310,25 @@ var app = {
             // console.log(e.target.className);
 
         });
-
+		/*==catching the count class innerHtml in a variable==*/
+		var $count = document.getElementsByClassName('count')[0].innerHTML;
+		/*==End of catching the count class innerHtml in var==*/
+		
+		//saving each attribute passed into an empty array i.e arr...
+//            for(var i = 0; i < $count[p].length; i++){
+//                for(var p in arg.dataAttr){
+//                    arr[p] = event.target.getAttribute(arg.dataAttr[i]) || event.target.parentElement.getAttribute(arg.dataAttr[i]);
+//                    i++;
+//                }
+//                break;
+//            }
+		
         //decrease the count of an item
         document.addEventListener('click', function(e){
             if(e.target.className !== arg.decrease){
                 return;
-            }
+            };
+			if(e.target.className.innerHtml){};
             var name = e.target.parentElement.getAttribute(arg.dataAttr[0]);
             removeItemFromCart(name);
             displayCart();

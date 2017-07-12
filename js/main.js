@@ -1,23 +1,23 @@
+/*jslint plusplus: true*/
 var app = {
-    cartCtrl: function(arg){
+    cartCtrl: function (arg) {
         arg = arg || {
-                       products : undefined,//class of products to be add or add butttons
-                       removeAllElement: undefined,//class
-                       increase: undefined,//class
-                       decrease: undefined,
-                       priceElement: undefined,//id
-                       serviceChargeElement: undefined, // id of service charge elememt
-                       serviceChargeValue: undefined, //percentage value
-                       deliveryFeeElement: undefined,//id of delivery fee element
-                       deliveryFeeValue: undefined, //integer
-                       cartContentElement: undefined,//id of cart content listings..
-                       cartNodeOutput: "li", //node which we be added to cartContentElement
-                       grandTotalElement: undefined
-                       
-                   }
+		    products : undefined,//class of products to be add or add butttons
+		    removeAllElement: undefined,//class
+		    increase: undefined,//class
+		    decrease: undefined,
+		    priceElement: undefined,//id
+		    serviceChargeElement: undefined, // id of service charge elememt
+		    serviceChargeValue: undefined, //percentage value
+		    deliveryFeeElement: undefined,//id of delivery fee element
+		    deliveryFeeValue: undefined, //integer
+		    cartContentElement: undefined,//id of cart content listings..
+		    cartNodeOutput: "li", //node which we be added to cartContentElement
+		    grandTotalElement: undefined
+		};
         
-        var cart = [];
-        var arr = [];
+        var cart = [],
+            arr = [];
 
         //sort the array into this format//
         function sorter(array, funcs, orders) {
@@ -25,13 +25,13 @@ var app = {
             orders = orders || {};
             array.sort(funcs.general);
             if (Array.isArray(orders.top)) {
-                orders.top.slice().reverse().forEach(function(value) {
+                orders.top.slice().reverse().forEach(function (value) {
                     array.sort(funcs.top.bind(value));
                 });
             }
 
             if (Array.isArray(orders.bottom)) {
-                orders.bottom.forEach(function(value) {
+                orders.bottom.forEach(function (value) {
                     array.sort(funcs.bottom.bind(value));
                 });
             }
@@ -50,7 +50,7 @@ var app = {
                 return +(!a.localeCompare(this));
             }
         }, {
-            top: ['data-name', 'data-price','data-count'],
+            top: ['data-name', 'data-price', 'data-count'],
             bottom: ['data-img']
         });
         //sorting array //
@@ -68,10 +68,11 @@ var app = {
         // }
 
         // an object constructor to create new items
-        function Item (){
-            var obj = {};
-            for(var i = 0; i < arguments.length;i++){
-                for(var p in arguments){
+        function Item() {
+            var obj = {},
+		        i = 0;
+            for (i = 0; i < arguments.length; i++) {
+                for (var p in arguments){
 
                     //dataAttr passed  is used to create  new object keys
                     //the first value in argument will match dataAttr
